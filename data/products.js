@@ -1,0 +1,153 @@
+export const PRODUCTS = [
+  {
+    id: "rengginang-5-rasa",
+    slug: "rengginang-lawu-5-rasa",
+    name: "Rengginang 5 Rasa (1kg)",
+    price: 60000,
+    desc: "Paket lengkap rengginang khas Magetan dengan 5 varian rasa: Bawang, Manis, Ebi, Terasi, dan Pedas. Sangat cocok untuk stok camilan keluarga atau oleh-oleh. Bisa request kemasan hampers/parcel untuk nikahan atau lebaran.",
+    tag: "Terlaris",
+    image: "/images/rengginang.jpg",
+    weight: "1kg",
+    status: "Ready Stock",
+    rating: 5.0,
+    category: "Camilan",
+    variants: ["Bawang", "Manis", "Ebi", "Terasi", "Pedas"]
+  },
+  {
+    id: "madu-mongso-premium",
+    slug: "madu-mongso-magetan",
+    name: "Madu Mongso Premium",
+    price: 80000,
+    desc: "Jajanan legendaris dari ketan hitam pilihan yang difermentasi. Rasa manis asam segar dengan tekstur legit. Cocok untuk hidangan hari raya atau hantaran pernikahan.",
+    tag: "Favorit",
+    image: "/images/madumongso.jpg",
+    weight: "1kg",
+    status: "Ready Stock",
+    rating: 4.9,
+    category: "Makanan"
+  },
+  {
+    id: "egg-roll-lawu",
+    slug: "egg-roll-premium",
+    name: "Egg Roll Premium (1kg)",
+    price: 125000,
+    desc: "Tekstur sangat renyah dan lumer di mulut dengan aroma butter yang kuat. Diproses higienis, sangat elegan untuk isian parcel lebaran atau kado spesial.",
+    tag: "Baru",
+    image: "/images/eggroll.jpg",
+    weight: "1kg",
+    status: "Ready Stock",
+    rating: 5.0,
+    category: "Camilan"
+  },
+  {
+    id: "likak-likuk-khas-magetan",
+    slug: "likak-likuk-tradisional",
+    name: "Likak Likuk Tradisional",
+    desc: "Kue tradisional dengan bentuk unik yang melekuk-lekuk. Tersedia varian tepung Kanji yang renyah gurih atau tepung Ketan yang lebih legit dan padat.",
+    tag: "Tradisional",
+    image: "/images/likak-likuk.jpg",
+    weight: "15 Biji",
+    status: "Ready Stock",
+    rating: 4.8,
+    category: "Camilan",
+    // Kita tambahkan info harga per varian di sini
+    variants: ["Kanji", "Ketan"],
+    variantPrices: {
+      "Kanji": 15000,
+      "Ketan": 14000
+    },
+    // Harga default (terendah) untuk tampilan di Grid
+    price: 14000 
+  },
+  {
+    id: "cipiran-gurih",
+    slug: "cipiran-magetan",
+    name: "Kue Cipiran Gurih",
+    price: 15000,
+    desc: "Camilan renyah berbentuk unik mirip buah cipir. Rasa gurih dengan sentuhan manis tipis, pas untuk teman ngopi atau ngeteh.",
+    tag: "",
+    image: "/images/cipiran.jpg",
+    weight: "± 200g",
+    status: "Ready Stock",
+    rating: 4.8,
+    category: "Camilan"
+  },
+  {
+    id: "lombokan-renyah",
+    slug: "lombokan-pedas-gurih",
+    name: "Kue Lombokan",
+    price: 15000,
+    desc: "Bentuknya yang mirip cabai (lombok) memberikan sensasi makan yang unik. Gurih, renyah, dan bikin nagih.",
+    tag: "",
+    image: "/images/lombokan.jpg",
+    weight: "± 200g",
+    status: "Ready Stock",
+    rating: 4.9,
+    category: "Camilan"
+  },
+  {
+    id: "kembang-goyang",
+    slug: "kembang-goyang-magetan",
+    name: "Kembang Goyang",
+    price: 13000,
+    desc: "Kue jadul berbentuk bunga yang digoreng hingga garing. Tekstur tipis renyah dengan rasa orisinal yang autentik.",
+    tag: "",
+    image: "/images/goyang.jpg",
+    weight: "± 200g",
+    status: "Ready Stock",
+    rating: 4.7,
+    category: "Camilan"
+  },
+  {
+    id: "onde-onde-ketawa",
+    slug: "onde-onde-kering",
+    name: "Onde-Onde Kering (1kg)",
+    price: 62000,
+    desc: "Onde-onde mini dengan taburan wijen melimpah. Tekstur renyah sampai ke dalam, awet disimpan lama. Tersedia untuk hampers.",
+    tag: "Favorit",
+    image: "/images/onde-onde.jpg",
+    weight: "1kg",
+    status: "Ready Stock",
+    rating: 4.9,
+    category: "Camilan"
+  },
+  {
+    id: "lempeng-puli-magetan",
+    slug: "lempeng-puli-khas-magetan",
+    name: "Lempeng Puli (1kg)",
+    price: 30000,
+    desc: "Kerupuk nasi (puli) khas Magetan yang renyah dan gurih. Dibuat dengan resep tradisional tanpa bahan pengawet berlebih. Cocok untuk teman makan nasi atau camilan santai.",
+    tag: "Tradisional",
+    image: "/images/lempeng.jpg",
+    weight: "1kg",
+    status: "Ready Stock",
+    rating: 4.8,
+    category: "Camilan"
+  },
+  {
+    id: "keripik-tempe-premium",
+    slug: "keripik-tempe-magetan",
+    name: "Keripik Tempe Sagu (1kg)",
+    price: 60000,
+    desc: "Irisan tempe yang sangat tipis berbalut tepung bumbu rahasia. Teksturnya super renyah dan tidak berminyak. Pilihan favorit untuk oleh-oleh keluarga.",
+    tag: "Terlaris",
+    image: "/images/keripik-tempe.jpg",
+    weight: "1kg",
+    status: "Ready Stock",
+    rating: 4.9,
+    category: "Camilan"
+  },
+  {
+    id: "sambal-kacang-huhah",
+    slug: "sambal-kacang-pedas-huhah",
+    name: "Sambel Kacang Pedas Huhah",
+    price: 60000,
+    desc: "Bumbu pecel/sambal kacang dengan level pedas nendang. Dibuat dari kacang tanah pilihan dan cabai segar. Praktis tinggal seduh dengan air hangat, rasa otentik Magetan.",
+    tag: "Pedas",
+    image: "/images/sambal-kacang.jpg",
+    weight: "1kg",
+    status: "Ready Stock",
+    rating: 5.0,
+    category: "Makanan"
+  }
+];

@@ -15,7 +15,7 @@ export const metadata = {
   openGraph: {
     title: "Oleh-oleh Khas Magetan - Pesan Online",
     description: "Jajanan khas Magetan kualitas premium, kirim ke seluruh Indonesia.",
-    url: "http://localhost:3000",
+    url: "https://www.jajananmagetan.biz.id/",
     siteName: "Mampir Magetan",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
     locale: "id_ID",

@@ -5,6 +5,6 @@ export default function robots() {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://oleholehmagetan.my.id/sitemap.xml',
+    sitemap: 'https://www.jajananmagetan.biz.id/sitemap.xml',
   }
 }

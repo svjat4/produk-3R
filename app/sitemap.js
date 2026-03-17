@@ -1,6 +1,6 @@
 // app/sitemap.js
 export default async function sitemap() {
-  const baseUrl = 'https://oleholehmagetan.my.id';
+  const baseUrl = 'https://www.jajananmagetan.biz.id/';
 
   // Daftar halaman statis
   const routes = ['', '/keranjang'].map((route) => ({

@@ -1,25 +1,32 @@
 // app/sitemap.js
-export default async function sitemap() {
-  const baseUrl = 'https://www.jajananmagetan.biz.id/';
+import { PRODUCTS } from "@/data/products";
 
-  // Daftar halaman statis
-  const routes = ['', '/keranjang'].map((route) => ({
+export default function sitemap() {
+  const baseUrl = "https://www.jajananmagetan.biz.id";
+
+  // Halaman statis
+  const staticRoutes = [
+    "",
+    "/produk",
+    "/keranjang",
+    "/tentang",
+    "/kontak",
+    "/kategori/oleh-oleh-khas-magetan",
+    "/kategori/jajanan-khas-magetan",
+  ].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString(),
-    changeFrequency: 'daily',
-    priority: 1.0,
+    lastModified: new Date(),
+    changeFrequency: "daily",
+    priority: route === "" ? 1.0 : 0.8,
   }));
 
-  // Jika nanti kamu punya data produk dari file data/products.js
-  // Kamu bisa looping di sini agar tiap produk punya link sendiri di Google
-  // Contoh:
-  /*
-  const productRoutes = products.map((product) => ({
+  // Halaman produk (dynamic)
+  const productRoutes = PRODUCTS.map((product) => ({
     url: `${baseUrl}/produk/${product.slug}`,
-    lastModified: new Date().toISOString(),
-    priority: 0.8,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.9,
   }));
-  */
 
-  return [...routes];
+  return [...staticRoutes, ...productRoutes];
 }

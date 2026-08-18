@@ -11,26 +11,59 @@ import {
   Truck,
   BadgeCheck,
   MessageCircle,
+  BookOpen,
+  Clock,
+  Check,
+  Sparkles,
+  MapPin,
+  Users,
+  Award,
+  ChevronRight,
+  Store,
+  Phone,
+  PackageCheck,
+  HelpCircle,
 } from "lucide-react";
 import { PRODUCTS } from "@/data/products";
 import { FAQS } from "@/data/faq";
+import { blogPosts } from "@/data/blog";
 import { useCart } from "@/context/CartContext";
 import FAQSection from "@/components/home/FAQSection";
 import TestimonialSection from "@/components/home/TestimonialSection";
 
+const SITE_URL = "https://www.jajananmagetan.biz.id";
+
 export default function Home() {
   const { addToCart } = useCart();
   const [activeCategory, setActiveCategory] = useState("Semua");
+  const [addedId, setAddedId] = useState(null);
 
   const whatsappUrl =
-    "https://wa.me/6281231773663?text=Halo%2C%20saya%20ingin%20memesan%20oleh-oleh%20khas%20Magetan";
+    "https://wa.me/6281231773663?text=Halo%2C%20saya%20ingin%20memesan%20oleh-oleh%20khas%20Magetan%20dari%20Produk%203R";
 
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setAddedId(product.id);
+    setTimeout(() => setAddedId(null), 1500);
+  };
+
+  // Ambil 3 artikel terbaru dengan pengaman jika blogPosts kosong/undefined
+  const latestBlogs = useMemo(() => {
+    if (!blogPosts || !Array.isArray(blogPosts)) return [];
+    return blogPosts.slice(0, 3);
+  }, []);
+
+  // Buat kategori unik dengan pengaman
   const categories = useMemo(() => {
-    const uniqueCategories = [...new Set(PRODUCTS.map((p) => p.category))];
+    if (!PRODUCTS || !Array.isArray(PRODUCTS)) return ["Semua"];
+    const uniqueCategories = [...new Set(PRODUCTS.map((p) => p.category).filter(Boolean))];
     return ["Semua", ...uniqueCategories];
   }, []);
 
+  // Filter & sort produk
   const filteredAndSortedProducts = useMemo(() => {
+    if (!PRODUCTS || !Array.isArray(PRODUCTS)) return [];
+    
     const tagPriority = {
       Terlaris: 1,
       Favorit: 2,
@@ -57,142 +90,239 @@ export default function Home() {
     });
   }, [activeCategory]);
 
-  const faqJsonLd = {
+  // JSON-LD Schema (Sudah diperbaiki syntax error-nya)
+  const homeJsonLd = {
     "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: FAQS.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.answer,
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: "Produk 3R — Pusat Oleh-oleh Khas Magetan",
+        description: "Pusat Grosir & Eceran Makanan Tradisional Khas Magetan Jawa Timur",
+        inLanguage: "id-ID",
       },
-    })),
+      {
+        "@type": "LocalBusiness",
+        "@id": `${SITE_URL}/#organization`,
+        name: "Produk 3R - Pusat Oleh-oleh Khas Magetan",
+        url: SITE_URL,
+        telephone: "+6281231773663",
+        priceRange: "Rp10.000 - Rp100.000",
+        image: `${SITE_URL}/og-image.jpg`,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Magetan",
+          addressRegion: "Jawa Timur",
+          addressCountry: "ID",
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: -7.6521,
+          longitude: 111.3263,
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ],
+          opens: "07:00",
+          closes: "21:00",
+        },
+        areaServed: [
+          "Magetan",
+          "Maospati",
+          "Plaosan",
+          "Telaga Sarangan",
+          "Jawa Timur",
+          "Indonesia",
+        ],
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/#webpage`,
+        url: SITE_URL,
+        name: "Pusat Grosir Oleh-oleh & Snack Khas Magetan | Produk 3R",
+        description:
+          "Produsen dan distributor resmi makanan tradisional khas Magetan Jawa Timur: Rengginang, Madu Mongso, Lempeng Puli, Keripik Tempe, dan Sambel Kacang.",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        about: [
+          { "@type": "Thing", name: "Oleh-oleh Khas Magetan" },
+          { "@type": "Thing", name: "Jajanan Tradisional Jawa Timur" },
+          { "@type": "Thing", name: "Kuliner Magetan" },
+          { "@type": "Thing", name: "Rengginang Ketan Magetan" },
+        ],
+        spatialCoverage: {
+          "@type": "Place",
+          name: "Magetan, Jawa Timur, Indonesia",
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: -7.6521,
+            longitude: 111.3263,
+          },
+        },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${SITE_URL}/#faq`,
+        mainEntity: (FAQS || []).map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+          },
+        })),
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${SITE_URL}/#featured-products`,
+        name: "Produk Unggulan Oleh-oleh Khas Magetan",
+        numberOfItems: (PRODUCTS || []).length,
+        itemListElement: (PRODUCTS || []).slice(0, 8).map((product, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "Product",
+            name: product.name,
+            image: product.image?.startsWith("http")
+              ? product.image
+              : `${SITE_URL}${product.image || ""}`,
+            description: product.shortDesc || product.description || "",
+            offers: {
+              "@type": "Offer",
+              priceCurrency: "IDR",
+              price: product.price || 0,
+              availability: "https://schema.org/InStock",
+              url: `${SITE_URL}/produk/${product.slug || ""}`,
+            },
+          },
+        })),
+      },
+    ],
   };
 
   return (
-    <main className="bg-[#fcfdfa] min-h-screen pb-32">
+    <main className="bg-slate-50/60 min-h-screen pb-24 text-slate-900">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqJsonLd),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }}
       />
 
-      {/* HERO */}
-      <section className="relative min-h-[88vh] flex items-center justify-center px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-green-50/60 via-transparent to-transparent -z-10" />
+      {/* HERO SECTION */}
+      <section className="relative pt-12 pb-16 md:pt-20 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white border-b border-slate-200/80">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-100/40 via-transparent to-transparent -z-10" />
 
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 mb-8 bg-white border border-gray-100 px-4 py-2 rounded-full shadow-sm">
+        <div className="max-w-6xl mx-auto text-center relative z-10">
+          <div className="inline-flex items-center gap-2 mb-6 bg-slate-900 text-white px-4 py-2 rounded-full shadow-lg shadow-slate-900/10 text-xs font-semibold tracking-wide">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
             </span>
-            <span className="text-[10px] font-black tracking-[0.25em] text-gray-500 uppercase">
-              Produk 3R — Oleh-oleh Khas Magetan
-            </span>
+            <Sparkles size={14} className="text-amber-300" />
+            <span>Pusat Oleh-oleh Khas Magetan — Produk 3R</span>
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-black tracking-tight leading-tight mb-6 text-gray-900">
-            Oleh-oleh Khas Magetan
-            <span className="block text-green-600">
-              Asli, Tradisional, Siap Kirim
-            </span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.15] mb-6 text-slate-900">
+            Cita Rasa Asli <span className="text-green-600">Magetan</span>,<br />
+            Dikirim Langsung ke Rumah Anda.
           </h1>
 
-          <p className="text-gray-500 text-base md:text-xl max-w-3xl mx-auto leading-relaxed mb-10">
-            Temukan jajanan khas Magetan pilihan seperti rengginang, madu mongso,
-            keripik tempe, lempeng puli, dan camilan tradisional favorit untuk
-            keluarga, tamu, maupun hampers spesial.
+          <p className="text-slate-600 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+            Nikmati aneka rengginang gurih, madu mongso manis, lempeng puli beras, dan keripik tempe renyah buatan pengrajin lokal Magetan. Kualitas terjamin, tanpa pengawet, siap grosir maupun eceran.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-12">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto bg-gray-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-green-600 transition-all duration-300 shadow-lg flex items-center justify-center gap-3"
+              className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-2xl font-bold transition-all duration-300 shadow-lg shadow-green-600/25 flex items-center justify-center gap-2.5 text-sm sm:text-base active:scale-95"
             >
               <MessageCircle size={20} />
-              Pesan via WhatsApp
+              <span>Pesan via WhatsApp</span>
             </a>
 
             <a
               href="#produk"
-              className="w-full sm:w-auto bg-white text-gray-900 border border-gray-200 px-8 py-4 rounded-2xl font-bold hover:bg-gray-50 transition-all duration-300"
+              className="w-full sm:w-auto bg-slate-100 hover:bg-slate-200/80 text-slate-900 border border-slate-200/80 px-8 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
             >
-              Lihat Produk
+              <span>Eksplor Katalog</span>
+              <ArrowRight size={18} />
             </a>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-gray-500">
-            <div className="flex items-center gap-2 bg-white px-4 py-3 rounded-2xl border border-gray-100 shadow-sm">
-              <ShieldCheck size={18} className="text-green-600" />
-              Produk pilihan & higienis
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto pt-8 border-t border-slate-100">
+            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-700 bg-slate-50 p-3 rounded-2xl border border-slate-200/60">
+              <ShieldCheck size={18} className="text-green-600 shrink-0" />
+              <span>100% Bahan Alami</span>
             </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-3 rounded-2xl border border-gray-100 shadow-sm">
-              <Truck size={18} className="text-green-600" />
-              Siap kirim & mudah dipesan
+            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-700 bg-slate-50 p-3 rounded-2xl border border-slate-200/60">
+              <Truck size={18} className="text-green-600 shrink-0" />
+              <span>Kirim Seluruh Indonesia</span>
             </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-3 rounded-2xl border border-gray-100 shadow-sm">
-              <BadgeCheck size={18} className="text-green-600" />
-              Cocok untuk oleh-oleh & hampers
+            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-700 bg-slate-50 p-3 rounded-2xl border border-slate-200/60">
+              <Award size={18} className="text-green-600 shrink-0" />
+              <span>Garansi Renyah & Fresh</span>
             </div>
-          </div>
-        </div>
-
-        <div className="absolute top-1/4 left-[-5%] w-[35%] h-[35%] bg-green-100/30 blur-[120px] rounded-full -z-10" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[30%] h-[30%] bg-green-50/50 blur-[100px] rounded-full -z-10" />
-      </section>
-
-      {/* KEUNGGULAN */}
-      <section className="max-w-7xl mx-auto px-6 mb-14">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
-            <h2 className="text-lg font-bold text-gray-900 mb-2">
-              Jajanan Khas Pilihan
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              Produk dipilih dari camilan dan makanan khas Magetan yang cocok untuk
-              oleh-oleh keluarga, tamu, maupun acara spesial.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
-            <h2 className="text-lg font-bold text-gray-900 mb-2">
-              Mudah Dipesan
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              Bisa pilih produk langsung dari katalog, tambah ke keranjang, lalu
-              lanjut pesan dengan alur yang lebih mudah dan jelas.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
-            <h2 className="text-lg font-bold text-gray-900 mb-2">
-              Cocok untuk Oleh-oleh
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              Banyak pilihan produk tahan lama, cocok untuk perjalanan, hantaran,
-              hampers, dan stok camilan di rumah.
-            </p>
+            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-700 bg-slate-50 p-3 rounded-2xl border border-slate-200/60">
+              <Users size={18} className="text-green-600 shrink-0" />
+              <span>Melayani Grosir & Reseller</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* FILTER KATEGORI */}
-      <section className="max-w-7xl mx-auto px-6 mb-10" id="produk">
-        <div className="flex items-center gap-3 mb-5 overflow-x-auto pb-2 scrollbar-hide">
-          <div className="flex bg-gray-100 p-1.5 rounded-[2rem] shadow-inner">
+      {/* METRICS */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
+        <div className="bg-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl grid grid-cols-2 lg:grid-cols-4 gap-6 text-center border border-slate-800">
+          <div>
+            <span className="block text-2xl md:text-3xl font-black text-green-400">10.000+</span>
+            <span className="text-xs sm:text-sm text-slate-400 font-medium">Paket Terkirim</span>
+          </div>
+          <div>
+            <span className="block text-2xl md:text-3xl font-black text-green-400">100%</span>
+            <span className="text-xs sm:text-sm text-slate-400 font-medium">Resep Asli Magetan</span>
+          </div>
+          <div>
+            <span className="block text-2xl md:text-3xl font-black text-green-400">150+</span>
+            <span className="text-xs sm:text-sm text-slate-400 font-medium">Agen & Reseller</span>
+          </div>
+          <div>
+            <span className="block text-2xl md:text-3xl font-black text-green-400">4.9/5.0</span>
+            <span className="text-xs sm:text-sm text-slate-400 font-medium">Rating Kepuasan</span>
+          </div>
+        </div>
+      </section>
+
+      {/* KATALOG PRODUK */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16" id="produk">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-green-700 bg-green-50 px-3 py-1 rounded-full">
+              Katalog Produk 3R
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
+              Jajanan Khas Magetan Pilihan
+            </h2>
+          </div>
+
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
             {categories.map((cat) => (
               <button
                 key={cat}
+                type="button"
                 onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-3 rounded-full text-sm font-bold transition-all duration-300 whitespace-nowrap ${
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 ${
                   activeCategory === cat
-                    ? "bg-white text-green-700 shadow-md"
-                    : "text-gray-500 hover:text-gray-800"
+                    ? "bg-slate-900 text-white shadow-sm"
+                    : "bg-white text-slate-600 hover:bg-slate-200/80 border border-slate-200/80"
                 }`}
               >
                 {cat}
@@ -200,148 +330,310 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
 
-      {/* GRID PRODUK */}
-      <section className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredAndSortedProducts.map((product) => (
             <article
               key={product.id}
-              className="group relative bg-white border border-gray-100 rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] hover:-translate-y-1"
+              className="group relative bg-white border border-slate-200/80 rounded-2xl overflow-hidden hover:border-slate-300 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
             >
-              {product.tag && (
-                <div
-                  className={`absolute top-4 left-4 z-10 text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-wider shadow-md ${
-                    product.tag === "Terlaris"
-                      ? "bg-orange-500 text-white"
-                      : product.tag === "Favorit"
-                      ? "bg-green-600 text-white"
-                      : "bg-black/75 text-white"
-                  }`}
-                >
-                  {product.tag}
-                </div>
-              )}
-
-              <Link
-                href={`/produk/${product.slug}`}
-                className="block relative aspect-[4/5] overflow-hidden"
-              >
-                <Image
-                  src={product.image}
-                  alt={product.imageAlt || product.name}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </Link>
-
-              <div className="p-6">
-                <div className="flex justify-between items-start gap-4 mb-2">
-                  <Link
-                    href={`/produk/${product.slug}`}
-                    className="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors"
-                  >
-                    {product.name}
-                  </Link>
-
-                  <div className="flex items-center gap-1 text-orange-400 shrink-0">
-                    <Star size={14} fill="currentColor" />
-                    <span className="text-xs font-bold text-gray-500">
-                      {product.rating?.toFixed(1) || "5.0"}
+              <div>
+                <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
+                  {product.tag && (
+                    <span
+                      className={`absolute top-3 left-3 z-10 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm ${
+                        product.tag === "Terlaris"
+                          ? "bg-amber-500 text-white"
+                          : product.tag === "Favorit"
+                          ? "bg-emerald-600 text-white"
+                          : "bg-slate-900/80 text-white backdrop-blur-md"
+                      }`}
+                    >
+                      {product.tag}
                     </span>
+                  )}
+
+                  <Link href={`/produk/${product.slug}`} className="block w-full h-full">
+                    <Image
+                      src={product.image || "/placeholder.jpg"}
+                      alt={product.imageAlt || product.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+                  </Link>
+                </div>
+
+                <div className="p-5">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-green-700 bg-green-50 px-2 py-0.5 rounded-md">
+                      {product.category || "Umum"}
+                    </span>
+
+                    <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
+                      <Star size={13} fill="currentColor" />
+                      <span className="text-slate-700">{product.rating?.toFixed(1) || "5.0"}</span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-base font-bold text-slate-900 group-hover:text-green-600 transition-colors leading-snug line-clamp-1">
+                    <Link href={`/produk/${product.slug}`}>{product.name}</Link>
+                  </h3>
+
+                  <p className="mt-1.5 text-xs text-slate-500 line-clamp-2 leading-relaxed min-h-[32px]">
+                    {product.shortDesc || product.description || product.desc}
+                  </p>
+
+                  <div className="mt-3 flex items-center justify-between text-xs text-slate-500 border-t border-slate-100 pt-3">
+                    <span>Berat: <strong className="text-slate-700">{product.weight || "-"}</strong></span>
+                    <span className="text-emerald-600 font-semibold">{product.status || "Ready"}</span>
                   </div>
                 </div>
+              </div>
 
-                <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 min-h-[44px]">
-                  {product.shortDesc || product.description || product.desc}
-                </p>
-
-                <div className="flex items-center justify-between mt-5 mb-4 text-sm">
-                  <span className="text-gray-500">Berat: {product.weight}</span>
-                  <span className="font-semibold text-green-700">
-                    {product.status}
+              <div className="px-5 pb-5 pt-0 flex items-center justify-between gap-3">
+                <div>
+                  <span className="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                    Harga
+                  </span>
+                  <span className="text-lg font-black text-slate-900">
+                    Rp{(product.price || 0).toLocaleString("id-ID")}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-2xl font-black text-gray-900">
-                    Rp{product.price.toLocaleString("id-ID")}
-                  </span>
+                <button
+                  type="button"
+                  onClick={() => handleAddToCart(product)}
+                  className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs transition-all active:scale-95 ${
+                    addedId === product.id
+                      ? "bg-emerald-600 text-white"
+                      : "bg-slate-900 hover:bg-green-600 text-white"
+                  }`}
+                  aria-label={`Tambah ${product.name} ke keranjang`}
+                >
+                  {addedId === product.id ? (
+                    <>
+                      <Check size={16} />
+                      <span>Masuk</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus size={16} />
+                      <span>Beli</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
 
-                  <button
-                    onClick={() => addToCart(product)}
-                    className="w-12 h-12 bg-gray-900 text-white rounded-2xl flex items-center justify-center hover:bg-green-600 transition-all active:scale-95"
-                    aria-label={`Tambah ${product.name} ke keranjang`}
-                  >
-                    <Plus size={20} />
-                  </button>
+        <div className="mt-10 text-center">
+          <Link
+            href="/produk"
+            className="inline-flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-900 border border-slate-200 px-6 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-sm"
+          >
+            <span>Lihat Seluruh Katalog Produk ({(PRODUCTS || []).length})</span>
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+      </section>
+
+      {/* ARTIKEL TERBARU */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-green-700 bg-green-50 px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+              <BookOpen size={14} />
+              <span>Edukasi & Wawasan Kuliner</span>
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
+              Artikel & Panduan Terbaru
+            </h2>
+          </div>
+
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-green-600 hover:text-green-700 transition-colors"
+          >
+            <span>Baca Semua Artikel</span>
+            <ChevronRight size={16} />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {latestBlogs.map((blog) => (
+            <article
+              key={blog.id || blog.slug}
+              className="group bg-white border border-slate-200/80 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="relative h-48 w-full bg-slate-100 overflow-hidden">
+                  {blog.category && (
+                    <div className="absolute top-3 left-3 z-10 bg-slate-900/80 text-white text-[10px] font-bold px-3 py-1 rounded-full backdrop-blur-md">
+                      {blog.category}
+                    </div>
+                  )}
+
+                  {blog.image ? (
+                    <Image
+                      src={blog.image}
+                      alt={blog.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-green-800 to-slate-900 flex items-center justify-center p-6 text-white text-center font-bold text-sm">
+                      {blog.title}
+                    </div>
+                  )}
                 </div>
 
-                <div className="mt-4">
-                  <Link
-                    href={`/produk/${product.slug}`}
-                    className="inline-flex items-center gap-2 text-sm font-bold text-green-700 hover:text-green-800"
-                  >
-                    Lihat detail
-                    <ArrowRight size={16} />
-                  </Link>
+                <div className="p-6">
+                  <div className="flex items-center gap-3 text-xs text-slate-400 mb-3">
+                    {blog.date && <span>{blog.date}</span>}
+                    {blog.date && blog.readTime && <span>•</span>}
+                    {blog.readTime && (
+                      <span className="flex items-center gap-1">
+                        <Clock size={12} />
+                        {blog.readTime}
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-green-600 transition-colors line-clamp-2 leading-snug mb-2">
+                    <Link href={`/blog/${blog.slug}`}>{blog.title}</Link>
+                  </h3>
+
+                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed line-clamp-3">
+                    {blog.excerpt || blog.description || blog.summary}
+                  </p>
                 </div>
+              </div>
+
+              <div className="px-6 pb-6 pt-0">
+                <Link
+                  href={`/blog/${blog.slug}`}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-green-600 hover:text-green-700"
+                >
+                  <span>Baca Selengkapnya</span>
+                  <ArrowRight size={14} />
+                </Link>
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      {/* SEO CONTENT BLOCK (Pillar Page Authority) - DITAMBAHKAN DI SINI */}
-      <section className="max-w-7xl mx-auto px-6 mt-20 mb-10">
-        <div className="bg-white rounded-[2rem] border border-gray-100 p-8 md:p-12 shadow-sm text-gray-700">
-          <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-6">
-            Pusat Grosir & Oleh Oleh Khas Magetan Terlengkap
+      {/* LOCAL ENTITY KNOWLEDGE BASE */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        <div className="bg-white rounded-3xl border border-slate-200/80 p-8 sm:p-12 shadow-sm text-slate-700">
+          <div className="flex items-center gap-2 text-green-700 text-xs font-bold uppercase tracking-wider mb-2">
+            <MapPin size={16} />
+            <span>Pusat Entitas Kuliner Magetan, Jawa Timur</span>
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-6">
+            Pusat Grosir & Distributor Oleh-Oleh Khas Magetan Resmi (Produk 3R)
           </h2>
-          <div className="prose prose-lg max-w-none text-gray-600">
-            <p className="leading-relaxed mb-4">
-              Selamat datang di <strong>Produk 3R - JajananMagetan.biz.id</strong>, pusat grosir dan <strong>distributor snack Magetan</strong> terpercaya. Kami berkolaborasi langsung dengan pengrajin UMKM lokal untuk menghadirkan aneka <strong>makanan khas Magetan</strong> berkualitas tinggi. Mulai dari lempeng puli, madu mongso, bolu rahayu, kerupuk rambak, hingga keripik tempe yang renyah dan gurih.
-            </p>
-            <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">Mengapa Memilih Jajanan Khas Magetan Kami?</h3>
-            <ul className="space-y-3 mb-6 list-disc pl-5">
-              <li><strong>Harga Grosir & Tangan Pertama:</strong> Pilihan tepat bagi Anda yang sedang mencari <em>supplier snack Magetan</em>, ingin menjadi agen, atau <em>open reseller snack Magetan</em> di kota Anda dengan margin keuntungan yang menarik.</li>
-              <li><strong>Kualitas Ekspor & Higienis:</strong> Setiap camilan khas diproduksi dengan standar kebersihan tinggi dan resep tradisional warisan turun-temurun asli daerah.</li>
-              <li><strong>Pengiriman Aman Seluruh Indonesia:</strong> Kami melayani pesanan <em>oleh oleh Magetan untuk Madiun, Solo, Ngawi, Ponorogo, Karanganyar</em>, hingga ke seluruh pelosok nusantara dengan standar packing ekstra aman.</li>
-              <li><strong>Solusi Hampers & Souvenir:</strong> Kami menyediakan paket khusus untuk <em>hampers Magetan</em>, parcel lebaran, suguhan acara keluarga, hingga suvenir pernikahan yang unik dan merakyat.</li>
-            </ul>
-            <p className="leading-relaxed">
-              Sebagai mitra resmi dan wadah <strong>produk UMKM Magetan</strong>, misi kami adalah memajukan ekonomi daerah dengan memperkenalkan kekayaan kuliner lokal ke kancah nasional. Tidak perlu repot datang ke toko fisik pusat oleh-oleh, Anda bisa memesan seluruh <strong>snack Magetan</strong> favorit Anda secara *online* langsung melalui WhatsApp kami. Proses mudah, harga grosir termurah, dan dijamin 100% amanah.
-            </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-xs sm:text-sm leading-relaxed text-slate-600 mb-8">
+            <div>
+              <p className="mb-4">
+                Selamat datang di <strong>Produk 3R (JajananMagetan.biz.id)</strong>, produsen dan mitra resmi distributor camilan tradisional khas Kabupaten Magetan. Kami memproduksi dan menyalurkan aneka makanan khas pilihan asli dari sentra UMKM lokal Magetan, meliputi area Kecamatan Magetan, Maospati, Plaosan, Karangrejo, hingga kawasan wisata Telaga Sarangan.
+              </p>
+              <p>
+                Setiap produk dibuat menggunakan resep warisan turun-temurun dengan bahan beras ketan asli, tempe pilihan, dan bumbu rempah alami tanpa bahan pengawet berbahaya. Cocok untuk hidangan keluarga, hajatan, suvenir acara, maupun stok grosir toko Anda.
+              </p>
+            </div>
+
+            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200/60">
+              <h3 className="font-bold text-slate-900 text-sm sm:text-base mb-3 flex items-center gap-2">
+                <Store size={18} className="text-green-600" />
+                <span>Kenapa Produk 3R Menjadi Pilihan Utama?</span>
+              </h3>
+              <ul className="space-y-2.5">
+                <li className="flex items-start gap-2">
+                  <BadgeCheck size={16} className="text-green-600 shrink-0 mt-0.5" />
+                  <span><strong>Harga Tangan Pertama:</strong> Langsung dari produsen tanpa perantara.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <BadgeCheck size={16} className="text-green-600 shrink-0 mt-0.5" />
+                  <span><strong>Layanan Reseller & Agen:</strong> Paket kemasan bal-balan untuk toko souvenir & snack.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <BadgeCheck size={16} className="text-green-600 shrink-0 mt-0.5" />
+                  <span><strong>Pengiriman Aman:</strong> Packing dus tebal + bubble wrap rapi untuk ekspedisi luar kota.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 text-slate-200 rounded-2xl p-6 border border-slate-800">
+            <h3 className="text-sm sm:text-base font-bold text-white mb-4 flex items-center gap-2">
+              <PackageCheck size={18} className="text-green-400" />
+              <span>Ringkasan Layanan & Informasi Toko (Fakta Produk 3R)</span>
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+              <div className="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                <span className="block text-slate-400 text-[11px] mb-1">Produk Utama</span>
+                <span className="font-semibold text-white">Rengginang Ketan, Madu Mongso, Lempeng Puli, Keripik Tempe</span>
+              </div>
+              <div className="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                <span className="block text-slate-400 text-[11px] mb-1">Lokasi Produksi</span>
+                <span className="font-semibold text-white">Kabupaten Magetan, Jawa Timur, Indonesia</span>
+              </div>
+              <div className="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                <span className="block text-slate-400 text-[11px] mb-1">Layanan Pemesanan</span>
+                <span className="font-semibold text-white">Eceran, Grosir, Reseller, & Suvenir Acara</span>
+              </div>
+              <div className="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                <span className="block text-slate-400 text-[11px] mb-1">Kontak Resmi WhatsApp</span>
+                <span className="font-semibold text-green-400">+62 812-3177-3663</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* TESTIMONIAL */}
+      {/* TESTIMONIAL & FAQ */}
       <TestimonialSection />
-      
-      {/* FAQ */}
-      <FAQSection />
+      <FAQSection faqs={FAQS} />
 
-      {/* CTA BAWAH */}
-      <section className="max-w-5xl mx-auto px-6 mt-16">
-        <div className="bg-gray-900 text-white rounded-[2rem] p-8 md:p-10 text-center shadow-2xl">
-          <h2 className="text-2xl md:text-3xl font-black mb-3">
-            Siap pesan oleh-oleh khas Magetan?
-          </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed mb-6">
-            Pilih produk favoritmu, masukkan ke keranjang, atau langsung hubungi kami
-            via WhatsApp untuk tanya stok, pengiriman, dan pesanan hampers.
-          </p>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-green-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-green-700 transition-all"
-          >
-            <MessageCircle size={20} />
-            Hubungi via WhatsApp
-          </a>
+      {/* BOTTOM CTA BANNER */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+        <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-green-950 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+          <div className="max-w-xl">
+            <span className="inline-block px-3 py-1 bg-green-500/20 border border-green-400/30 text-green-300 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+              Siap Kirim Hari Ini
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black leading-tight mb-3">
+              Pesan Oleh-oleh Khas Magetan Sekarang
+            </h2>
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+              Pilih produk melalui katalog web atau langsung konsultasikan kebutuhan hampers dan grosir Anda via WhatsApp kami. Response cepat dan ramah!
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2.5 bg-green-600 hover:bg-green-500 text-white font-bold py-3.5 px-8 rounded-2xl text-xs sm:text-sm transition-all shadow-md active:scale-95"
+            >
+              <MessageCircle size={18} />
+              <span>Chat WhatsApp Langsung</span>
+            </a>
+            <Link
+              href="/produk"
+              className="inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 px-8 rounded-2xl text-xs sm:text-sm transition-all border border-slate-700"
+            >
+              <span>Lihat Katalog</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
         </div>
       </section>
     </main>

@@ -1,32 +1,32 @@
 export const FAQS = [
   {
-    question: "Apakah produk bisa dikirim ke luar kota?",
+    question: "Apa saja produk jajanan khas Magetan dan Sarangan unggulan di Produk 3R?",
     answer:
-      "Ya, produk oleh-oleh khas Magetan dari Produk 3R bisa dikirim ke luar kota. Untuk ongkir, estimasi pengiriman, dan rekomendasi produk yang lebih aman dibawa perjalanan jauh, silakan hubungi kami melalui WhatsApp.",
+      "Produk 3R Magetan menyediakan aneka kuliner tradisional khas Magetan dan Jawa Timur unggulan, seperti Rengginang renyah, Wajik ketan legit, Madu Mongso autentik, serta beragam camilan oleh-oleh favorit yang diproduksi secara higienis dan fresh.",
   },
   {
-    question: "Apakah semua produk selalu ready stock?",
+    question: "Apakah produk oleh-oleh khas Magetan ini bisa dikirim ke luar kota?",
     answer:
-      "Sebagian besar produk tersedia dan siap dipesan, tetapi untuk jumlah banyak, hampers, parcel, atau pesanan khusus sebaiknya konfirmasi terlebih dahulu agar stok bisa dipastikan.",
+      "Ya, Produk 3R melayani pengiriman jajanan khas Magetan dan oleh-oleh Sarangan ke seluruh wilayah Indonesia, termasuk area Madiun, Surabaya, hingga Jabodetabek. Setiap paket dilapisi pengaman ekstra (bubble wrap & kardus tebal) agar aman selama perjalanan.",
   },
   {
-    question: "Bagaimana cara memesan produk di website ini?",
+    question: "Produk oleh-oleh apa yang paling awet untuk perjalanan jauh atau buah tangan wisata Sarangan?",
     answer:
-      "Kamu bisa memilih produk dari katalog, menambahkannya ke keranjang, lalu melanjutkan konfirmasi pesanan melalui WhatsApp. Admin akan membantu informasi stok, ongkir, dan detail pembayaran.",
+      "Untuk oleh-oleh wisata Telaga Sarangan Magetan atau perjalanan jauh, camilan kering seperti Rengginang dan Madu Mongso adalah pilihan terbaik karena memiliki masa simpan lama tanpa bahan pengawet berbahaya.",
   },
   {
-    question: "Apakah bisa pesan untuk hampers, parcel, atau acara khusus?",
+    question: "Apakah Produk 3R menerima pesanan hampers, parcel, atau partai besar (grosir)?",
     answer:
-      "Bisa. Produk 3R Magetan melayani pesanan untuk hampers, parcel, hadiah, dan kebutuhan acara tertentu. Kamu bisa langsung menghubungi admin untuk detail produk dan jumlah pesanan.",
+      "Bisa. Kami melayani pembuatan hampers oleh-oleh khas Jawa Timur, parcel acara hajatan/hari raya, serta pesanan grosir jajanan tradisional untuk reseller maupun kebutuhan instansi.",
   },
   {
-    question: "Produk mana yang cocok untuk oleh-oleh atau perjalanan jauh?",
+    question: "Bagaimana cara pesan jajanan khas Magetan melalui website ini?",
     answer:
-      "Untuk oleh-oleh dan perjalanan jauh, biasanya produk camilan kering atau produk yang lebih tahan lama menjadi pilihan yang lebih aman. Jika bingung memilih, kamu bisa bertanya langsung agar kami bantu rekomendasikan.",
+      "Pilih produk dari katalog online, masukkan ke keranjang belanja, lalu klik tombol checkout WhatsApp. Admin Produk 3R Magetan akan mengonfirmasi ketersediaan stok, rincian ongkos kirim, dan opsi pembayaran.",
   },
   {
-    question: "Apakah saya bisa bertanya stok sebelum checkout?",
+    question: "Di mana lokasi pusat oleh-oleh Produk 3R Magetan?",
     answer:
-      "Tentu. Kamu bisa menghubungi admin terlebih dahulu melalui WhatsApp untuk memastikan ketersediaan stok, varian produk, dan estimasi pengiriman sebelum menyelesaikan pesanan.",
+      "Pusat operasional dan produksi Produk 3R berlokasi di Kabupaten Magetan, Jawa Timur—sangat dekat dari kawasan wisata Telaga Sarangan dan wilayah Madiun. Pemesanan dapat dilakukan secara online melalui website ini atau pesan langsung via WhatsApp.",
   },
 ];

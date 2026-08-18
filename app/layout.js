@@ -12,9 +12,7 @@ const inter = Inter({
 
 const siteUrl = "https://www.jajananmagetan.biz.id";
 const siteName = "Produk 3R Magetan";
-// Optimasi Title untuk Click-Through Rate (CTR) yang lebih tinggi
 const siteTitle = "Pusat Grosir Oleh-oleh & Snack Khas Magetan | Produk 3R";
-// Penambahan LSI Keyword pada Deskripsi
 const siteDescription =
   "Pusat grosir dan distributor oleh-oleh khas Magetan. Tersedia rengginang, madu mongso, keripik tempe, lempeng puli, dan jajanan tradisional UMKM pilihan. Pesan mudah via WhatsApp.";
 
@@ -22,7 +20,7 @@ export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: siteTitle,
-    template: "%s | Produk 3R Magetan",
+    template: `%s | ${siteName}`,
   },
   description: siteDescription,
   applicationName: siteName,
@@ -35,21 +33,27 @@ export const metadata = {
     "jajanan khas Magetan",
     "toko oleh-oleh Magetan",
     "pusat oleh-oleh Magetan",
-    "grosir snack magetan",       // Keyword Tambahan
-    "distributor snack magetan",  // Keyword Tambahan
+    "grosir snack magetan",
+    "distributor snack magetan",
     "madu mongso Magetan",
     "rengginang Magetan",
     "keripik tempe Magetan",
     "lempeng puli Magetan",
     "sambel kacang Magetan",
     "produk 3R Magetan",
+    "kuliner Magetan Jawa Timur",
   ],
-  // PERHATIAN: alternates canonical dihapus dari sini agar 
-  // halaman dinamis (/produk/[slug]) tidak kanibal ke homepage.
+  alternates: {
+    canonical: "./",
+  },
   formatDetection: {
     email: false,
     address: true,
     telephone: true,
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     type: "website",
@@ -84,11 +88,12 @@ export const metadata = {
       "max-snippet": -1,
     },
   },
+  verification: {
+    google: "mAmTX8FopY4Z9AQfSPEKvn0lYF8rtpq9j1Q2Ws0xZOk",
+  },
 };
 
 export default function RootLayout({ children }) {
-  // Menggabungkan schema menggunakan @graph agar Google memahami 
-  // bahwa Entitas Bisnis, Organisasi, dan Website ini saling terhubung.
   const globalJsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -101,19 +106,37 @@ export default function RootLayout({ children }) {
           "@type": "ImageObject",
           url: `${siteUrl}/logo.jpg`,
         },
+        description: siteDescription,
+        knowsAbout: [
+          "Oleh-oleh khas Magetan",
+          "Kuliner Tradisional Jawa Timur",
+          "Snack UMKM Magetan",
+          "Rengginang",
+          "Madu Mongso",
+          "Lempeng Puli",
+        ],
         sameAs: [
+          "https://share.google/StJEZjxuvKRLJOSdg",
           "https://maps.app.goo.gl/y6YtYn7yrn2iivUy8",
-          "https://instagram.com/username_anda", // Pastikan diganti dengan username asli
+          "https://instagram.com/produk3r.magetan",
         ],
       },
       {
-        "@type": "LocalBusiness",
+        "@type": ["LocalBusiness", "Store", "WholesaleStore"],
         "@id": `${siteUrl}/#localbusiness`,
         name: siteName,
         image: `${siteUrl}/logo.jpg`,
         url: siteUrl,
         telephone: "+6281231773663",
-        priceRange: "Rp10.000 - Rp150.000", // Format Rupiah lebih disukai Local SEO ID
+        priceRange: "Rp10.000 - Rp150.000",
+        currenciesAccepted: "IDR",
+        paymentAccepted: "Cash, Bank Transfer, QRIS",
+        hasMap: "https://share.google/StJEZjxuvKRLJOSdg",
+        sameAs: [
+          "https://share.google/StJEZjxuvKRLJOSdg",
+          "https://maps.app.goo.gl/y6YtYn7yrn2iivUy8",
+          "https://instagram.com/produk3r.magetan",
+        ],
         parentOrganization: {
           "@id": `${siteUrl}/#organization`,
         },
@@ -125,6 +148,25 @@ export default function RootLayout({ children }) {
           postalCode: "63314",
           addressCountry: "ID",
         },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: -7.6521,
+          longitude: 111.3263,
+        },
+        areaServed: [
+          {
+            "@type": "AdministrativeArea",
+            name: "Magetan",
+          },
+          {
+            "@type": "AdministrativeArea",
+            name: "Jawa Timur",
+          },
+          {
+            "@type": "Country",
+            name: "Indonesia",
+          },
+        ],
         openingHoursSpecification: [
           {
             "@type": "OpeningHoursSpecification",
@@ -156,9 +198,8 @@ export default function RootLayout({ children }) {
   };
 
   return (
-    <html lang="id">
+    <html lang="id" className="scroll-smooth">
       <head>
-        {/* Render 1 blok JSON-LD terpusat */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

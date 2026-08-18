@@ -14,7 +14,7 @@ const siteUrl = "https://www.jajananmagetan.biz.id";
 const siteName = "Produk 3R Magetan";
 const siteTitle = "Pusat Grosir Oleh-oleh & Snack Khas Magetan | Produk 3R";
 const siteDescription =
-  "Pusat grosir dan distributor oleh-oleh khas Magetan. Tersedia rengginang, madu mongso, keripik tempe, lempeng puli, dan jajanan tradisional UMKM pilihan. Pesan mudah via WhatsApp.";
+  "Pusat grosir & distributor oleh-oleh khas Magetan. Sedia rengginang, madu mongso, keripik tempe, lempeng puli & jajanan tradisional. Pesan via WA.";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),

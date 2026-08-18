@@ -12,9 +12,11 @@ const inter = Inter({
 
 const siteUrl = "https://www.jajananmagetan.biz.id";
 const siteName = "Produk 3R Magetan";
-const siteTitle = "Oleh-oleh Khas Magetan | Produk 3R Magetan";
+// Optimasi Title untuk Click-Through Rate (CTR) yang lebih tinggi
+const siteTitle = "Pusat Grosir Oleh-oleh & Snack Khas Magetan | Produk 3R";
+// Penambahan LSI Keyword pada Deskripsi
 const siteDescription =
-  "Pusat oleh-oleh khas Magetan. Tersedia rengginang, madu mongso, keripik tempe, lempeng puli, sambel kacang, dan jajanan tradisional pilihan. Pesan mudah via WhatsApp.";
+  "Pusat grosir dan distributor oleh-oleh khas Magetan. Tersedia rengginang, madu mongso, keripik tempe, lempeng puli, dan jajanan tradisional UMKM pilihan. Pesan mudah via WhatsApp.";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -33,6 +35,8 @@ export const metadata = {
     "jajanan khas Magetan",
     "toko oleh-oleh Magetan",
     "pusat oleh-oleh Magetan",
+    "grosir snack magetan",       // Keyword Tambahan
+    "distributor snack magetan",  // Keyword Tambahan
     "madu mongso Magetan",
     "rengginang Magetan",
     "keripik tempe Magetan",
@@ -40,9 +44,8 @@ export const metadata = {
     "sambel kacang Magetan",
     "produk 3R Magetan",
   ],
-  alternates: {
-    canonical: "/",
-  },
+  // PERHATIAN: alternates canonical dihapus dari sini agar 
+  // halaman dinamis (/produk/[slug]) tidak kanibal ke homepage.
   formatDetection: {
     email: false,
     address: true,
@@ -67,8 +70,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: siteTitle,
-    description:
-      "Pusat jajanan khas Magetan dengan pilihan camilan tradisional dan oleh-oleh favorit.",
+    description: siteDescription,
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -85,80 +87,82 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const organizationJsonLd = {
+  // Menggabungkan schema menggunakan @graph agar Google memahami 
+  // bahwa Entitas Bisnis, Organisasi, dan Website ini saling terhubung.
+  const globalJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: siteName,
-    url: siteUrl,
-    logo: `${siteUrl}/logo.jpg`,
-    image: `${siteUrl}/logo.jpg`,
-    sameAs: [
-      "https://maps.app.goo.gl/y6YtYn7yrn2iivUy8",
-      "https://instagram.com/username_anda",
-    ],
-  };
-
-  const localBusinessJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: siteName,
-    image: `${siteUrl}/logo.jpg`,
-    url: siteUrl,
-    telephone: "+6281231773663",
-    priceRange: "$$",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Jl. Manggis No. 33",
-      addressLocality: "Magetan",
-      addressRegion: "Jawa Timur",
-      postalCode: "63314",
-      addressCountry: "ID",
-    },
-    openingHoursSpecification: [
+    "@graph": [
       {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday",
+        "@type": "Organization",
+        "@id": `${siteUrl}/#organization`,
+        name: siteName,
+        url: siteUrl,
+        logo: {
+          "@type": "ImageObject",
+          url: `${siteUrl}/logo.jpg`,
+        },
+        sameAs: [
+          "https://maps.app.goo.gl/y6YtYn7yrn2iivUy8",
+          "https://instagram.com/username_anda", // Pastikan diganti dengan username asli
         ],
-        opens: "08:00",
-        closes: "17:00",
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": `${siteUrl}/#localbusiness`,
+        name: siteName,
+        image: `${siteUrl}/logo.jpg`,
+        url: siteUrl,
+        telephone: "+6281231773663",
+        priceRange: "Rp10.000 - Rp150.000", // Format Rupiah lebih disukai Local SEO ID
+        parentOrganization: {
+          "@id": `${siteUrl}/#organization`,
+        },
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Jl. Manggis No. 33",
+          addressLocality: "Magetan",
+          addressRegion: "Jawa Timur",
+          postalCode: "63314",
+          addressCountry: "ID",
+        },
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            ],
+            opens: "08:00",
+            closes: "17:00",
+          },
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        name: siteName,
+        url: siteUrl,
+        inLanguage: "id-ID",
+        publisher: {
+          "@id": `${siteUrl}/#organization`,
+        },
       },
     ],
-  };
-
-  const websiteJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: siteName,
-    url: siteUrl,
-    inLanguage: "id-ID",
   };
 
   return (
     <html lang="id">
       <head>
+        {/* Render 1 blok JSON-LD terpusat */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationJsonLd),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusinessJsonLd),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteJsonLd),
+            __html: JSON.stringify(globalJsonLd),
           }}
         />
       </head>

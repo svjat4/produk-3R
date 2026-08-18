@@ -13,6 +13,7 @@ export default function sitemap() {
     "/kontak",
     "/kategori/oleh-oleh-khas-magetan",
     "/kategori/jajanan-khas-magetan",
+    "/blog/rekomendasi-oleh-oleh-khas-magetan",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),

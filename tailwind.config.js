@@ -27,5 +27,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'), // Plugin ini mengaktifkan kelas 'prose'
+  ],
 }

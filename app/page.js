@@ -293,7 +293,33 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SEO CONTENT BLOCK (Pillar Page Authority) - DITAMBAHKAN DI SINI */}
+      <section className="max-w-7xl mx-auto px-6 mt-20 mb-10">
+        <div className="bg-white rounded-[2rem] border border-gray-100 p-8 md:p-12 shadow-sm text-gray-700">
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-6">
+            Pusat Grosir & Oleh Oleh Khas Magetan Terlengkap
+          </h2>
+          <div className="prose prose-lg max-w-none text-gray-600">
+            <p className="leading-relaxed mb-4">
+              Selamat datang di <strong>Produk 3R - JajananMagetan.biz.id</strong>, pusat grosir dan <strong>distributor snack Magetan</strong> terpercaya. Kami berkolaborasi langsung dengan pengrajin UMKM lokal untuk menghadirkan aneka <strong>makanan khas Magetan</strong> berkualitas tinggi. Mulai dari lempeng puli, madu mongso, bolu rahayu, kerupuk rambak, hingga keripik tempe yang renyah dan gurih.
+            </p>
+            <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">Mengapa Memilih Jajanan Khas Magetan Kami?</h3>
+            <ul className="space-y-3 mb-6 list-disc pl-5">
+              <li><strong>Harga Grosir & Tangan Pertama:</strong> Pilihan tepat bagi Anda yang sedang mencari <em>supplier snack Magetan</em>, ingin menjadi agen, atau <em>open reseller snack Magetan</em> di kota Anda dengan margin keuntungan yang menarik.</li>
+              <li><strong>Kualitas Ekspor & Higienis:</strong> Setiap camilan khas diproduksi dengan standar kebersihan tinggi dan resep tradisional warisan turun-temurun asli daerah.</li>
+              <li><strong>Pengiriman Aman Seluruh Indonesia:</strong> Kami melayani pesanan <em>oleh oleh Magetan untuk Madiun, Solo, Ngawi, Ponorogo, Karanganyar</em>, hingga ke seluruh pelosok nusantara dengan standar packing ekstra aman.</li>
+              <li><strong>Solusi Hampers & Souvenir:</strong> Kami menyediakan paket khusus untuk <em>hampers Magetan</em>, parcel lebaran, suguhan acara keluarga, hingga suvenir pernikahan yang unik dan merakyat.</li>
+            </ul>
+            <p className="leading-relaxed">
+              Sebagai mitra resmi dan wadah <strong>produk UMKM Magetan</strong>, misi kami adalah memajukan ekonomi daerah dengan memperkenalkan kekayaan kuliner lokal ke kancah nasional. Tidak perlu repot datang ke toko fisik pusat oleh-oleh, Anda bisa memesan seluruh <strong>snack Magetan</strong> favorit Anda secara *online* langsung melalui WhatsApp kami. Proses mudah, harga grosir termurah, dan dijamin 100% amanah.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIAL */}
       <TestimonialSection />
+      
       {/* FAQ */}
       <FAQSection />
 
